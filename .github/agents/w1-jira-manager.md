@@ -131,22 +131,24 @@ Save the Excel file after ALL services are processed.
 
 ---
 
-## Output to pass to @orchestrator
+## Output — Report back to @alert-ingestor
+
+After processing ALL services and saving the Excel, report to `@alert-ingestor`:
 ```
-W1 COMPLETE
+W1 JIRA COMPLETE
 ─────────────────────────────────────────
 Excel file     : dependabot_alerts_<date>.xlsx
 Services found : X
 Total alerts   : X  (CRITICAL: X, HIGH: X, MEDIUM: X, LOW: X)
 
 Jira results:
-  CREATED : X  → [SEC-101, SEC-102, ...]
-  UPDATED : X  → [SEC-098, ...]  (existing tickets refreshed)
+  CREATED : X  → [SCRUM-5, SCRUM-6, ...]
+  SKIPPED : X  → [SCRUM-3, ...]  (existing tickets)
   FAILED  : X  → (errors if any)
 
 Services with tickets (for Workflow 2):
-  - HMS       → SEC-101
-  - service-2 → SEC-102
+  - GHS       → SCRUM-5
+  - service-2 → SCRUM-6
 ```
 
 ## Rules

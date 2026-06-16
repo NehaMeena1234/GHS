@@ -82,7 +82,9 @@ For each group found in pom.xml:
 
 ---
 
-## Output to pass to @w2-fixer
+## Output — Hand off to @w2-fixer
+
+Pass the full context map to `@w2-fixer`:
 ```
 CONTEXT MAP
 ─────────────────────────────────────────
@@ -104,3 +106,5 @@ Sibling group audit:
   jjwt    : consistent ✅ (all on 0.12.3)
   jackson : pre-existing mismatch ⚠️ (core=2.13.2, databind=2.13.0)
 ```
+
+> Do NOT return to @vuln-resolver — pass directly to @w2-fixer.

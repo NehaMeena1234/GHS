@@ -109,13 +109,13 @@ Transition ticket status → **In Review**
 
 ---
 
-## Output to pass to @orchestrator
+## Output — Report back to @vuln-resolver
+
 ```
 W2 COMPLETE
 ─────────────────────────────────────────
 Service         : <SERVICE_NAME>
 Jira ticket     : <JIRA_TICKET_ID> → In Review
-PR raised       : <PR_URL>
 
 Fixes applied   : X
 Fixes reverted  : X
@@ -126,8 +126,10 @@ Concerns flagged: X
 ─────────────────────────────────────────
 ```
 
+> Always report back to @vuln-resolver — never directly to @dependabot-vuln-orchestrator.
+
 ## Rules
 - Never raise a PR if mvn compile fails on the final pom.xml
 - Always reference the Jira ticket ID in both the commit message and PR title
 - Always update the Jira ticket status after raising the PR
-- If Jira update fails → still raise the PR, log the Jira failure separately
+- If Jira update fails → still complete the report, log the Jira failure separately

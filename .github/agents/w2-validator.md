@@ -86,7 +86,9 @@ If health check fails:
 
 ---
 
-## Output to pass to @w2-reporter
+## Output — Hand off to @w2-reporter
+
+Pass to `@w2-reporter`:
 ```
 VALIDATION RESULTS
 ─────────────────────────────────────────
@@ -112,8 +114,15 @@ Flagged concerns:
   ⚠️  guava: 29.0-jre → 32.0-jre caused compile failure — reverted, manual review needed
 ```
 
+Also pass:
+- `JIRA_TICKET_ID` — received from @vuln-resolver
+- `SERVICE_NAME` — received from @vuln-resolver
+
+> Do NOT return to @vuln-resolver — pass directly to @w2-reporter.
+> **Exception:** If ALL fixes were reverted → stop here and report failure back to @vuln-resolver.
+
 ## Rules
 - Never revert the entire pom.xml — revert only the specific failing fix
 - Always re-run compile after each individual revert to confirm stability
-- If ALL fixes are reverted → report to orchestrator, do NOT pass to @w2-reporter
+- If ALL fixes are reverted → report to @vuln-resolver, do NOT pass to @w2-reporter
 - A fix is only considered validated after compile + test + health check all pass

@@ -78,7 +78,9 @@ If bumping a sibling causes a MAJOR version jump (e.g. 1.x → 2.x) → flag for
 
 ---
 
-## Output to pass to @w2-validator
+## Output — Hand off to @w2-validator
+
+Pass to `@w2-validator`:
 - Patched pom.xml (full content)
 - Changes log:
   ```
@@ -86,10 +88,11 @@ If bumping a sibling causes a MAJOR version jump (e.g. 1.x → 2.x) → flag for
   FIXED   : log4j-api 2.14.1 → 2.17.2 (inline, sibling consistency)
   FIXED   : commons-collections 3.2.1 → 3.2.2 (inline) — CVE-2015-7501
   FIXED   : jackson.version property 2.13.2 → 2.14.0 (property-backed)
-  FIXED   : jackson-core 2.13.2 → 2.14.0 (sibling consistency)
   SKIPPED : spring-core (BOM-managed)
   ```
 - Concerns list (major version bumps, pre-existing mismatches resolved)
+
+> Do NOT return to @vuln-resolver — pass directly to @w2-validator.
 
 ## Rules
 - Always fix CRITICAL before HIGH, MEDIUM, LOW
