@@ -31,7 +31,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", "..", ".en
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 
 REPOS = [
-    "tanishq-sh17/HMS",
+    "NehaMeena1234/GHS",
     # "your-org/service-2",
     # "your-org/service-3",
 ]

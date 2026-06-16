@@ -22,18 +22,15 @@ Ask the user:
 
 ## If "ingest" or "both"
 
-Delegate to sub-agents in this exact order:
+Delegate to **@alert-ingestor** — it handles all four steps internally:
+- Run fetch script → Sort Excel → Dedup Jira check → Create tickets
 
-1. **@w1-fetcher** — Run the fetch script, get the Excel file
-2. **@w1-sorter** — Sort and group the Excel by service + severity
-3. **@w1-jira-manager** — Dedup against Jira, create tickets, update Excel
+Wait for it to complete.
+If it reports a `GITHUB_TOKEN` error or script failure → stop, surface the error to the user.
 
-Wait for each sub-agent to complete before moving to the next.
-If any sub-agent fails → stop, report which one failed and why. Do not proceed.
-
-After all 3 complete, collect:
+After completion, collect:
 - Excel file path
-- Services with NEW Jira tickets created → pass to Workflow 2 if mode is "both"
+- Services with **newly created** Jira tickets → pass to Workflow 2 if mode is "both"
 
 ---
 
@@ -44,15 +41,11 @@ Ask for (or receive from Workflow 1):
 - Repo (e.g. tanishq-sh17/HMS)
 - Jira ticket ID (e.g. SEC-101)
 
-Delegate to sub-agents in this exact order:
+Delegate to **@vuln-resolver** — it handles all four phases internally:
+- Fetch & Classify → Fix → Validate → Report (Jira only, no PR)
 
-1. **@w2-context-builder** — Fetch alerts + pom.xml, build context map
-2. **@w2-fixer** — Apply version fixes to pom.xml
-3. **@w2-validator** — Validate with build, tests, smoke check
-4. **@w2-reporter** — Raise PR, update Jira ticket
-
-Wait for each sub-agent to complete before moving to the next.
-If validation fails entirely (no fixes survived) → do NOT raise PR. Report to user.
+Wait for it to complete.
+If it reports all fixes reverted → stop, surface the flagged concerns to the user.
 
 ---
 
@@ -74,13 +67,14 @@ After all workflows complete, output:
 ║ WORKFLOW 2 — RESOLVER                                ║
 ║  Services processed   : X                            ║
 ║  Fixes applied        : X                            ║
-║  PRs raised           : X                            ║
+║  Fixes reverted       : X (manual action needed)     ║
 ║  Concerns flagged     : X                            ║
 ║  Jira updated         : X → In Review                ║
+║  ℹ️  No PR raised — review pom.xml and raise manually ║
 ╚══════════════════════════════════════════════════════╝
 ```
 
 ## Rules
 - Never run Workflow 2 unless a Jira ticket exists for the service
-- Never raise a PR if mvn compile fails
+- Never raise a PR — pom.xml fixes are applied directly; human raises the PR
 - Always report sub-agent failures clearly with the reason

@@ -2,3 +2,5 @@
 logs
 .codemie
 target
+.env
+dependabot_alerts_*.xlsx
